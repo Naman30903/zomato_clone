@@ -6,7 +6,7 @@ class MenuItem {
   final String description;
   final double price;
   final String restaurantId;
-  final List<String> imageUrls;
+  final String imageUrls;
   final bool isAvailable;
   final List<FoodCategory> categories;
   final bool isVegetarian;
@@ -23,7 +23,7 @@ class MenuItem {
     required this.description,
     required this.price,
     required this.restaurantId,
-    this.imageUrls = const [],
+    this.imageUrls = '',
     this.isAvailable = true,
     this.categories = const [],
     this.isVegetarian = false,
@@ -65,7 +65,7 @@ class MenuItem {
       description: description ?? this.description,
       price: price ?? this.price,
       restaurantId: restaurantId ?? this.restaurantId,
-      imageUrls: imageUrls ?? this.imageUrls,
+      imageUrls: '',
       isAvailable: isAvailable ?? this.isAvailable,
       categories: categories ?? this.categories,
       isVegetarian: isVegetarian ?? this.isVegetarian,
@@ -107,7 +107,9 @@ class MenuItem {
       description: json['description'],
       price: json['price'],
       restaurantId: json['restaurantId'],
-      imageUrls: List<String>.from(json['imageUrls'] ?? []),
+      imageUrls: (json['imageUrls'] is List)
+          ? (json['imageUrls'] as List).join(',')
+          : (json['imageUrls'] ?? ''),
       isAvailable: json['isAvailable'] ?? true,
       categories:
           (json['categories'] as List?)
