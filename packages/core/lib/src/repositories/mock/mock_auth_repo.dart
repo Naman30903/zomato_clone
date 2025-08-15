@@ -11,6 +11,7 @@ class MockAuthRepo implements AuthRepo {
       email: 'customer@example.com',
       role: UserRole.customer,
       phoneNumber: '1234567890',
+      addresses: ['123 Main St'],
       createdAt: DateTime.now().subtract(const Duration(days: 30)),
       updatedAt: DateTime.now().subtract(const Duration(days: 30)),
     ),
