@@ -5,12 +5,15 @@ import 'package:feastly_restaurant/screens/home_screen.dart';
 import 'package:feastly_restaurant/screens/menu_mgmt_screen.dart';
 import 'package:feastly_restaurant/screens/order_details_screen.dart';
 import 'package:feastly_restaurant/screens/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:core/core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const FeastlyRestaurantApp());
 }
 
