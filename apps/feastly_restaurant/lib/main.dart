@@ -1,9 +1,12 @@
 import 'package:feastly_restaurant/bloc/incoming_order_bloc.dart';
 import 'package:feastly_restaurant/bloc/menu_mgmt_bloc.dart';
 import 'package:feastly_restaurant/bloc/order_action_bloc.dart';
+import 'package:feastly_restaurant/bloc/restaurant_auth_bloc.dart';
 import 'package:feastly_restaurant/screens/home_screen.dart';
 import 'package:feastly_restaurant/screens/menu_mgmt_screen.dart';
 import 'package:feastly_restaurant/screens/order_details_screen.dart';
+import 'package:feastly_restaurant/screens/restaurant_signup_screen.dart';
+import 'package:feastly_restaurant/screens/restuartant_login_screen.dart';
 import 'package:feastly_restaurant/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +29,14 @@ class FeastlyRestaurantApp extends StatelessWidget {
       providers: [
         RepositoryProvider<OrderRepo>(create: (_) => MockOrderRepo()),
         RepositoryProvider<MenuRepo>(create: (_) => MockMenuRepo()),
+        RepositoryProvider<AuthRepo>(create: (_) => FirebaseAuthRepo()),
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider<AuthBloc>(
+            create: (context) =>
+                AuthBloc(authRepo: context.read<AuthRepo>())..add(AppStarted()),
+          ),
           BlocProvider<IncomingOrdersBloc>(
             create: (context) =>
                 IncomingOrdersBloc(orderRepo: context.read<OrderRepo>())
@@ -43,13 +51,17 @@ class FeastlyRestaurantApp extends StatelessWidget {
                 MenuMgmtBloc(menuRepo: context.read<MenuRepo>()),
           ),
         ],
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'Feastly Restaurant',
-          theme: ThemeGenerator.restaurantTheme(isDark: false),
-          darkTheme: ThemeGenerator.restaurantTheme(isDark: true),
-          themeMode: ThemeMode.system,
-          routerConfig: _router,
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              title: 'Feastly Restaurant',
+              theme: ThemeGenerator.restaurantTheme(isDark: false),
+              darkTheme: ThemeGenerator.restaurantTheme(isDark: true),
+              themeMode: ThemeMode.system,
+              routerConfig: _router,
+            );
+          },
         ),
       ),
     );
@@ -60,6 +72,7 @@ class FeastlyRestaurantApp extends StatelessWidget {
 class Routes {
   static const String splash = '/';
   static const String login = '/login';
+  static const String signup = '/signup';
   static const String home = '/home';
   static const String menuManagement = '/menu';
   static const String orderManagement = '/orders';
@@ -73,10 +86,14 @@ final GoRouter _router = GoRouter(
       path: Routes.splash,
       builder: (context, state) => const SplashScreen(),
     ),
-    //     GoRoute(
-    //       path: Routes.login,
-    //       builder: (context, state) => const LoginScreen(),
-    //     ),
+    GoRoute(
+      path: Routes.login,
+      builder: (context, state) => const RestaurantLoginScreen(),
+    ),
+    GoRoute(
+      path: Routes.signup,
+      builder: (context, state) => const RestaurantSignupScreen(),
+    ),
     GoRoute(path: Routes.home, builder: (context, state) => const HomeScreen()),
     GoRoute(
       path: Routes.orderDetails,
@@ -89,21 +106,30 @@ final GoRouter _router = GoRouter(
       path: Routes.menuManagement,
       builder: (context, state) => MenuManagementScreen(restaurantId: 'rest_1'),
     ),
-    // GoRoute(
-    //   path: '/menu/add',
-    //   builder: (context, state) => const AddEditMenuItemScreen(isEditing: false),
-    // ),
-    // GoRoute(
-    //   path: '/menu/edit/:id',
-    //   builder: (context, state) {
-    //     final menuItemId = state.pathParameters['id'] ?? '';
-    //     return AddEditMenuItemScreen(isEditing: true, menuItemId: menuItemId);
-    //   },
-    // ),
-    //     GoRoute(
-    //       path: Routes.profile,
-    //       builder: (context, state) => const ProfileScreen(),
-    //     ),
   ],
   initialLocation: Routes.splash,
+  redirect: (context, state) {
+    final authState = context.read<AuthBloc>().state;
+    final bool isLoggedIn = authState is Authenticated;
+
+    final bool isGoingToLogin = state.matchedLocation == Routes.login;
+    final bool isGoingToSignup = state.matchedLocation == Routes.signup;
+    final bool isGoingToSplash = state.matchedLocation == Routes.splash;
+
+    // If not logged in and not going to auth pages, redirect to login
+    if (!isLoggedIn &&
+        !isGoingToLogin &&
+        !isGoingToSignup &&
+        !isGoingToSplash) {
+      return Routes.login;
+    }
+
+    // If logged in and going to auth pages, redirect to home
+    if (isLoggedIn && (isGoingToLogin || isGoingToSignup)) {
+      return Routes.home;
+    }
+
+    // No redirect needed
+    return null;
+  },
 );
