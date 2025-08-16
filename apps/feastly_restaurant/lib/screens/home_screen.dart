@@ -413,7 +413,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildOrderCard(
-    String orderId, // raw id (e.g. 'order_1')
+    String orderId,
     DateTime time,
     int itemCount,
     String status,
@@ -486,7 +486,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  // ...existing
 
   Widget _buildMenuSection() {
     return Column(

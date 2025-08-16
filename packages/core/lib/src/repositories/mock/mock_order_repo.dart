@@ -33,6 +33,7 @@ class MockOrderRepo implements OrderRepo {
       deliveryFee: 2.99,
       total: 22.77,
       status: OrderStatus.placed,
+      deliveryPersonId: '3',
       deliveryAddress: '123 Main St',
       estimatedDeliveryTime: DateTime.now().add(const Duration(minutes: 45)),
       paymentMethod: PaymentMethod.upi,
@@ -70,6 +71,7 @@ class MockOrderRepo implements OrderRepo {
       paymentMethod: PaymentMethod.creditCard,
       createdAt: DateTime.now().subtract(const Duration(hours: 1)),
       updatedAt: DateTime.now().subtract(const Duration(minutes: 30)),
+      deliveryPersonId: '3',
     ),
   ];
 
