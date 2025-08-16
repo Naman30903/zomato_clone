@@ -1,12 +1,12 @@
+import 'package:feastly_delivery/bloc/delivery_order_bloc.dart';
+import 'package:feastly_delivery/bloc/delivery_status_bloc.dart';
+import 'package:feastly_delivery/screens/assigned_order_screen.dart';
+import 'package:feastly_delivery/screens/home_screen.dart';
+import 'package:feastly_delivery/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:core/core.dart';
-// import 'screens/login_screen.dart';
-// import 'screens/splash_screen.dart';
-// import 'screens/home_screen.dart';
-// import 'screens/order_details_screen.dart';
-// import 'screens/navigation_screen.dart';
-// import 'screens/profile_screen.dart';
 
 void main() {
   runApp(const FeastlyDeliveryApp());
@@ -17,12 +17,29 @@ class FeastlyDeliveryApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Feastly Delivery',
-      theme: ThemeGenerator.deliveryTheme(isDark: false),
-      darkTheme: ThemeGenerator.deliveryTheme(isDark: true),
-      themeMode: ThemeMode.system,
-      // routerConfig: _router,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<OrderRepo>(create: (_) => MockOrderRepo()),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<DeliveryOrderBloc>(
+            create: (context) =>
+                DeliveryOrderBloc(orderRepo: context.read<OrderRepo>()),
+          ),
+          BlocProvider<DeliveryStatusBloc>(
+            create: (context) =>
+                DeliveryStatusBloc(orderRepo: context.read<OrderRepo>()),
+          ),
+        ],
+        child: MaterialApp.router(
+          title: 'Feastly Delivery',
+          theme: ThemeGenerator.deliveryTheme(isDark: false),
+          darkTheme: ThemeGenerator.deliveryTheme(isDark: true),
+          themeMode: ThemeMode.system,
+          routerConfig: _router,
+        ),
+      ),
     );
   }
 }
@@ -38,38 +55,35 @@ class Routes {
 }
 
 // Router configuration
-// final GoRouter _router = GoRouter(
-//   routes: [
-//     GoRoute(
-//       path: Routes.splash,
-//       builder: (context, state) => const SplashScreen(),
-//     ),
-//     GoRoute(
-//       path: Routes.login,
-//       builder: (context, state) => const LoginScreen(),
-//     ),
-//     GoRoute(
-//       path: Routes.home,
-//       builder: (context, state) => const HomeScreen(),
-//     ),
-//     GoRoute(
-//       path: Routes.orderDetails,
-//       builder: (context, state) {
-//         final orderId = state.pathParameters['id'] ?? '';
-//         return OrderDetailsScreen(orderId: orderId);
-//       },
-//     ),
-//     GoRoute(
-//       path: Routes.navigation,
-//       builder: (context, state) {
-//         final orderId = state.pathParameters['orderId'] ?? '';
-//         return NavigationScreen(orderId: orderId);
-//       },
-//     ),
-//     GoRoute(
-//       path: Routes.profile,
-//       builder: (context, state) => const ProfileScreen(),
-//     ),
-//   ],
-//   initialLocation: Routes.splash,
-// );
+final GoRouter _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: Routes.splash,
+      builder: (context, state) => const SplashScreen(),
+    ),
+    //     GoRoute(
+    //       path: Routes.login,
+    //       builder: (context, state) => const LoginScreen(),
+    //     ),
+    GoRoute(path: Routes.home, builder: (context, state) => const HomeScreen()),
+    // GoRoute(
+    //   path: Routes.orderDetails,
+    //   builder: (context, state) {
+    //     final orderId = state.pathParameters['id'] ?? '';
+    //     return OrderDetailsScreen(orderId: orderId);
+    //   },
+    // ),
+    GoRoute(
+      path: Routes.orderDetails,
+      builder: (context, state) {
+        final orderId = state.pathParameters['id'] ?? '';
+        return AssignedOrderScreen(orderId: orderId);
+      },
+    ),
+    //     GoRoute(
+    //       path: Routes.profile,
+    //       builder: (context, state) => const ProfileScreen(),
+    //     ),
+  ],
+  initialLocation: Routes.splash,
+);
