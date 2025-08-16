@@ -1,4 +1,4 @@
-package com.example.feastly
+package com.codesphere.feastly
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "406550609000",
+    "project_id": "feastly-86ebc",
+    "storage_bucket": "feastly-86ebc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406550609000:android:dc0e73efd76becbbe4cfdd",
+        "android_client_info": {
+          "package_name": "com.codesphere.feastly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZoqOaLtemc2PrtN9KXscfE4oxWEti1kg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406550609000:android:12dde9fcf86a8c06e4cfdd",
+        "android_client_info": {
+          "package_name": "com.codesphere.feastly_delivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZoqOaLtemc2PrtN9KXscfE4oxWEti1kg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

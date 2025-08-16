@@ -1,4 +1,4 @@
-package com.example.feastly_restaurant
+package com.codesphere.feastly_delivery
 
 import io.flutter.embedding.android.FlutterActivity
 

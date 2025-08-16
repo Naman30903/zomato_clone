@@ -10,12 +10,15 @@ import 'package:feastly/screens/order_tracking-screen.dart';
 import 'package:feastly/screens/profile_screen.dart';
 import 'package:feastly/screens/restaurant_detail_screen.dart';
 import 'package:feastly/screens/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:core/core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const FeastlyApp());
 }
 
