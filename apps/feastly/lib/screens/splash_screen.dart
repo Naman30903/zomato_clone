@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Navigate to login after 2 seconds
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        context.go('/home');
+        context.go('/login');
       }
     });
   }

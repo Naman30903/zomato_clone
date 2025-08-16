@@ -1,3 +1,4 @@
+import 'package:feastly/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core/core.dart';
@@ -68,10 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _logout() async {
     try {
-      await context.read<AuthRepo>().signOut();
-      if (mounted) {
-        context.go('/login');
-      }
+      context.read<AuthBloc>().add(LogOut());
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error signing out: ${e.toString()}')),

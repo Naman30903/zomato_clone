@@ -19,6 +19,7 @@ export 'src/repositories/mock/mock_auth_repo.dart';
 export 'src/repositories/mock/mock_restaurant_repo.dart';
 export 'src/repositories/mock/mock_menu_repo.dart';
 export 'src/repositories/mock/mock_order_repo.dart';
+export 'src/repositories/firebase/firebase_auth_repo.dart';
 
 // 📦 Shared BLoCs
 export 'src/blocs/auth_bloc.dart';
@@ -35,3 +36,7 @@ export 'src/services/logger_service.dart';
 
 // 📦 Errors
 export 'src/errors/app_exception.dart';
+
+// Add new UI exports
+export 'src/ui/login_screen.dart';
+export 'src/ui/signup_screen.dart';
